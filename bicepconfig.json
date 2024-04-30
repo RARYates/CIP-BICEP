@@ -1,0 +1,25 @@
+{
+    "moduleAliases": {
+        "br": {
+            "demoazureregistry":{
+                "registry": "demoazuregistry.azurecr.io",
+                "modulePath": "bicep/modules" 
+            }
+        }     
+    },
+    "analyzers": {
+        "core": {
+          "verbose": false,
+          "enabled": true,
+          "rules": {
+            "no-hardcoded-location": {
+              "level": "off"
+            },
+            "explicit-values-for-loc-params": {
+              "level": "off"
+            }
+          }
+        }
+      }
+}
+

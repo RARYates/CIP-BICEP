@@ -1,0 +1,1 @@
+The datasheet can be found [here](https://microsoftapc.sharepoint.com/:f:/t/ANZCE-AzureBicepIPDevelopmentTeam/Ekamn6na9_pKqj7KPPtmzMcB5J4q0NyYnI9RUc78h8bdlA?e=ZMfjPd)

@@ -1,0 +1,37 @@
+az login
+
+resourceGroupName="template-spec-demo-rg"
+
+#az account list --output table
+
+##az account set --subscription  "Your Subscription Name or ID"
+
+az group create --name $resourceGroupName --location "australiaeast"
+az configure --defaults group=$resourceGroupName 
+
+#######################################
+##Publish as Template Spec
+az ts create \
+  --name ToyCosmosDBAccount \
+  --location australiaeast \
+  --display-name "Cosmos DB account" \
+  --description "This template spec creates a Cosmos DB account that meets our company's requirements." \
+  --version 1.0 \
+  --template-file main.bicep \
+  --resource-group $resourceGroupName
+
+ ##Verify Template spec has been created
+
+#######################################
+  
+##Deploy from Template spec
+templateSpecVersionResourceId=$(az ts show \
+--name ToyCosmosDBAccount --version 1.0 --query id --output tsv)
+
+az deployment group create --template-spec $templateSpecVersionResourceId
+
+##Verify deployment of resource
+
+
+az group delete --name $resourceGroupName --yes --no-wait
+#######################################

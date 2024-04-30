@@ -1,0 +1,32 @@
+#!/bin/sh
+resourceGroupName="simple-windowsvm-demo-rg"
+location="Australia East"
+
+##Create resource group
+az group create --name $resourceGroupName --location $location
+
+#Create an admin password
+adminPassword=$(pwgen -c -n -s 13 1)
+echo $adminPassword
+
+#Admin user
+adminUser="devadm01"
+
+###########################
+
+##Deploy resource group and provision resources - parameter file input
+az deployment group create \
+    --resource-group $resourceGroupName \
+    --template-file "simple-windowsvm-deploy.bicep" \
+    --parameters "simple-windowsvm.parameters.json"  ##--what-if
+
+
+##Deploy resource group and provision resources - params passed in on command line
+az deployment group create \
+    --resource-group $resourceGroupName \
+    --template-file "simple-windowsvm-deploy.bicep" \
+    --parameters adminUsername=$adminUser adminPassword=$adminPassword ##--what-if
+    
+
+##Cleanup Resourcegroup
+az group delete --name $resourceGroupName --yes --no-wait

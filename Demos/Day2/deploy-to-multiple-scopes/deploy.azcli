@@ -1,0 +1,25 @@
+az login
+
+az account list --output table
+
+az account set --subscription  "61aa3d6f-dfcc-4efd-9a31-cdd72cc97716"
+
+
+
+templateFile="main.bicep"
+today=$(date +"%d-%b-%Y")
+deploymentName="sub-scope-"$today
+virtualNetworkName="rnd-vnet-001"
+virtualNetworkAddressPrefix="10.0.0.0/24"
+
+az deployment sub create \
+    --name $deploymentName \
+    --location australiaeast \
+    --template-file $templateFile \
+    --parameters virtualNetworkName=$virtualNetworkName \
+                 virtualNetworkAddressPrefix=$virtualNetworkAddressPrefix
+
+subscriptionId=$(az account show --query 'id' --output tsv)
+az policy assignment delete --name 'DenyFandGSeriesVMs' --scope "/subscriptions/$subscriptionId"
+az policy definition delete --name 'DenyFandGSeriesVMs' --subscription $subscriptionId
+az group delete --name ToyNetworking
